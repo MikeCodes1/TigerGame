@@ -221,7 +221,7 @@ vector<Point_t> legalTigerMoves(vector<Token_t> &menTokens, Move_t &tiger){
         }
     }
 
-    // --- One-step moves (only if no man is in that spot) ---
+    // One-step moves (only if no man is in that spot)
     for(const auto& move : possibleOneMoves){
         bool occupied = false;
         for(const auto& man : menTokens){
@@ -235,7 +235,7 @@ vector<Point_t> legalTigerMoves(vector<Token_t> &menTokens, Move_t &tiger){
         }
     }
 
-    // --- Two-step (jump) moves: must jump over a man and land on empty space ---
+    // Two-step (jump) moves: must jump over a man and land on empty space
     for(int i = 0; i < possibleTwoMoves.size(); i++){
         // To check if there's a man in the middle of the jump
         int midX = (x + possibleTwoMoves[i].row) / 2;
@@ -277,7 +277,26 @@ Move_t TigerTokenMove(vector<Token_t> tokens, Move_t moveTiger){
     cout << "Possible Moves:" << endl;
     for(int i = 0; i < moveOptions.size(); i++){
         cout << " (" << moveOptions[i].row << " " << moveOptions[i].col << ")";
+        if(moveTiger.token.location.row < moveOptions[i].row){
+            moveTiger.destination = moveOptions[i];
+        }
+
+        //JUMP conditions
+        if(moveTiger.token.location.row + 2 == moveOptions[i].row){
+            moveTiger.destination = moveOptions[i];
+        }
+        else if (moveTiger.token.location.row - 2 == moveOptions[i].row){
+            moveTiger.destination = moveOptions[i];
+        }
+        else if(moveTiger.token.location.col - 2 == moveOptions[i].col){
+            moveTiger.destination = moveOptions[i];
+        }
+        else if(moveTiger.token.location.col + 2 == moveOptions[i].col){
+            moveTiger.destination = moveOptions[i];
+        }
     }
+
+
     cout << endl;
 
     return moveTiger;
@@ -287,18 +306,20 @@ Move_t TigerTokenMove(vector<Token_t> tokens, Move_t moveTiger){
 Move_t Move_Team12(vector<Token_t> vector1, Color_t color) {
     Move_t move1;
 
-    if(color == RED){//tiger turn
+    //tiger turn
+    if(color == RED){
         move1.token = vector1[TIGER];
 
         move1 = TigerTokenMove(vector1, move1);
-        move1.destination.row = move1.token.location.row + 1;
+        /*move1.destination.row = move1.token.location.row + 1;
         move1.destination.col = move1.token.location.col;
 
         if(move1.destination.row >= 8){
             move1.destination.row = move1.token.location.row - 1;
-        }
+        }*/
 
-    } else{//men turn
+    }
+    else{//men turn
 
     }
 
